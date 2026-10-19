@@ -1,0 +1,13 @@
+package com.project.chatd;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ChatdApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ChatdApplication.class, args);
+	}
+
+}
