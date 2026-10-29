@@ -1,42 +1,20 @@
 
 services:
-  mongodb:
-    image: mongo:7
-    container_name: mongo-db
-    restart: unless-stopped
+  # Servicio 1: Base de datos MongoDB
+  mongo:
+    image: mongo:latest
+    container_name: mongodb_container
+    restart: always
+    ports:
+      - "27017:27017" # Para que también puedas conectarte desde Robo3T, Compass o DBeaver si lo deseas
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: 1234
-      MONGO_INITDB_DATABASE: chatd
+      MONGO_INITDB_ROOT_PASSWORD: elportu123
     volumes:
-      - mongo_data:/data/db
-    networks:
-      - backend
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - mongo_data:/data/db # Mantiene tus datos guardados aunque el contenedor se apague
 
-  spring-app:
-    build: .
-    container_name: spring-boot-app
-    restart: unless-stopped
-    depends_on:
-      mongodb:
-        condition: service_healthy  # Espera a que Mongo responda antes de iniciar Spring
-    environment:
-      # La URI apunta al nombre del servicio "mongodb", no a localhost
-      SPRING_DATA_MONGODB_URI: mongodb://admin:password123@mongodb:27017/mi_app_db?authSource=admin
-      SPRING_PROFILES_ACTIVE: prod
-    ports:
-      - "8080:8080"
-    networks:
-      - backend
 
+
+# Volúmenes para persistir la información de MongoDB
 volumes:
   mongo_data:
-
-networks:
-  backend:
-    driver: bridge

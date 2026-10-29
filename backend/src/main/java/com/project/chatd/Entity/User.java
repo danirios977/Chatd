@@ -1,81 +1,102 @@
 package com.project.chatd.Entity;
 
+
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "users")
 public class User {
 	
-	private int userId;
-	private String phoneNumer;
-	private String displayName;
-	private String urlPhoto;
-	private int chatId[];
-	private int messageId[];
-	private boolean isOnline;
+	@Id
+	private String userId;
 	
-	public User(int userId, String phoneNumer, String displayName, String urlPhoto, int[] chatId, int[] messageId) {
-
+	private String userName;
+	private String email;
+	private String password;
+	private String avatarUrl; //Foto de perfil
+	private String status; // "ONLINE", "OFFLINE"
+	private LocalDateTime lastSeen; // Ultima vez conectado
+	private LocalDateTime createdAt; //Fecha de registro
+	
+	public User() {
+	}
+	
+	public User(String userId, String userName, String email, String password, String avatarUrl) {
 		this.userId = userId;
-		this.phoneNumer = phoneNumer;
-		this.displayName = displayName;
-		this.urlPhoto = urlPhoto;
-		this.chatId = chatId;
-		this.messageId = messageId;
-		this.isOnline = false;
+		this.userName = userName;
+		this.email = email;
+		this.password = password;
+		this.avatarUrl = avatarUrl;
+		this.createdAt = LocalDateTime.now();
+		this.lastSeen = LocalDateTime.now();
+		this.status = "OFFLINE";
 	}
 
-	//Getter and Setter
-	
-	public int getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	public String getPhoneNumer() {
-		return phoneNumer;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setPhoneNumer(String phoneNumer) {
-		this.phoneNumer = phoneNumer;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public String getDisplayName() {
-		return displayName;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getUrlPhoto() {
-		return urlPhoto;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setUrlPhoto(String urlPhoto) {
-		this.urlPhoto = urlPhoto;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public int[] getChatId() {
-		return chatId;
+	public String getAvatarUrl() {
+		return avatarUrl;
 	}
 
-	public void setChatId(int[] chatId) {
-		this.chatId = chatId;
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
 	}
 
-	public int[] getMessageId() {
-		return messageId;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setMessageId(int[] messageId) {
-		this.messageId = messageId;
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public LocalDateTime getLastSeen() {
+		return lastSeen;
+	}
+
+	public void setLastSeen(LocalDateTime lastSeen) {
+		this.lastSeen = lastSeen;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 	
-	public boolean isOnline() {
-		return isOnline;
-	}
-
-	public void setOnline(boolean isOnline) {
-		this.isOnline = isOnline;
-	}
+	
 }

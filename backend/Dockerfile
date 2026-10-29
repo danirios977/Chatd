@@ -1,28 +1,21 @@
-# --- Etapa 1: Construcción (Build) ---
-FROM maven:4.1-eclipse-temurin-17 AS builder
+# 1. Imagen base con Maven y Java para compilar el proyecto
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copiamos solo el pom primero para cachear dependencias
+# Copiamos el pom.xml y el código fuente local
 COPY pom.xml .
-RUN mvn dependency:go-offline
-
-# Copiamos el código fuente y compilamos
 COPY src ./src
+
+# Compilamos el proyecto omitiendo los tests para acelerar el proceso
 RUN mvn clean package -DskipTests
 
-# --- Etapa 2: Ejecución (Runtime) ---
-# Usamos una imagen base mínima (Alpine) para seguridad y tamaño
-FROM eclipse-temurin:17-jre-alpine
+# 2. Imagen final liviana para ejecutar el JAR
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-# Creamos un usuario no-root (buena práctica de seguridad)
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
-
-# Copiamos el JAR desde la etapa anterior
-COPY --from=builder /app/target/*.jar app.jar
+# Copiamos el archivo .jar generado en la etapa anterior
+COPY --from=build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-# JVM flags recomendados para contenedores (ajuste automático de memoria)
-ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
