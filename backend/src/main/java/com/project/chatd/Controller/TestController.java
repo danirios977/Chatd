@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +21,20 @@ import com.project.chatd.Repository.UserRepository;
 @RequestMapping("api/test")
 public class TestController {
 	
-	@Autowired
-	private UserRepository userRepository;
-	private ChatRepository chatRepository;
-	private MessageRepository messageRepository;
+	private final UserRepository userRepository;
+	private final ChatRepository chatRepository;
+	private final MessageRepository messageRepository;
 	
+	public TestController(UserRepository userRepository, ChatRepository chatRepository,
+			MessageRepository messageRepository) {
+		
+		this.userRepository = userRepository;
+		this.chatRepository = chatRepository;
+		this.messageRepository = messageRepository;
+	}
+
+
+
 	@PostMapping("/users")
 	public ResponseEntity<List<User>> createUsers(){
 		

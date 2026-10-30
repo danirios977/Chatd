@@ -7,12 +7,15 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 
 @Configuration
 public class MongoConfig {
 
     @Bean
-    public MongoClient mongo() {
+    public MongoClient mongoClient() {
         
         MongoCredential credential = MongoCredential.createCredential("admin", "admin", "elportu123".toCharArray());
 
@@ -22,5 +25,15 @@ public class MongoConfig {
                 .build();
 
         return MongoClients.create(settings);
+    }
+    
+    @Bean
+    public MongoDatabaseFactory mongoDataBaseFactory() {
+    	return new SimpleMongoClientDatabaseFactory(mongoClient(), "chatd");
+    }
+    
+    @Bean
+    public MongoTemplate mongoTemplate() {
+    	return new MongoTemplate(mongoDataBaseFactory());
     }
 }

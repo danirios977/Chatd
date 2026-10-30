@@ -35,7 +35,6 @@ public class SecurityConfig {
                 .password("{noop}123456") // {noop} le dice a Spring que compare la contraseña en texto plano de forma literal
                 .roles("ADMIN")
                 .build();
-
             
         return new InMemoryUserDetailsManager(tester);
     }
